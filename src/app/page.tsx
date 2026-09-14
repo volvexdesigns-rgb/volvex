@@ -1,4 +1,3 @@
-import { About } from "@/components/About";
 import { Contact } from "@/components/Contact";
 import { FAQ } from "@/components/FAQ";
 import { FinalCTA } from "@/components/FinalCTA";
@@ -32,7 +31,6 @@ export default function Home() {
         <Portfolio />
         <WhyVolvex />
         <Process />
-        <About />
         <Stats />
         <Team />
         <FAQ />

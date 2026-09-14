@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ProjectCard } from "@/components/ProjectCard";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
@@ -9,6 +9,7 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
 import { PROJECTS, PROJECT_FILTERS } from "@/data/projects";
 import { clsx } from "@/lib/clsx";
 import { EASE } from "@/lib/motion";
+import { useAutoScroll } from "@/lib/useAutoScroll";
 import type { ProjectCategory, ProjectSpan } from "@/lib/types";
 
 type Filter = ProjectCategory | "all";
@@ -23,6 +24,12 @@ const SPAN_CLASSES: Record<ProjectSpan, string> = {
 export function Portfolio() {
   const [filter, setFilter] = useState<Filter>("all");
   const reduceMotion = useReducedMotion();
+  const railRef = useAutoScroll<HTMLDivElement>();
+
+  // A new filter renders a different set — start it back at the first card.
+  useEffect(() => {
+    railRef.current?.scrollTo({ left: 0 });
+  }, [filter, railRef]);
 
   const visibleProjects = PROJECTS.filter(
     (project) => filter === "all" || project.category === filter,
@@ -91,9 +98,15 @@ export function Portfolio() {
           </div>
         </Reveal>
 
+        {/* Mobile: an auto-advancing swipe rail. sm+: the editorial grid. */}
         <motion.div
+          ref={railRef}
           layout={!reduceMotion}
-          className="mt-8 grid gap-5 sm:mt-10 lg:grid-cols-12 lg:gap-6"
+          className={clsx(
+            "no-scrollbar -mx-5 mt-8 flex snap-x snap-mandatory scroll-pl-5 gap-5 overflow-x-auto px-5 pb-1",
+            "sm:mx-0 sm:mt-10 sm:grid sm:snap-none sm:overflow-visible sm:px-0 sm:pb-0",
+            "lg:grid-cols-12 lg:gap-6",
+          )}
         >
           <AnimatePresence mode="popLayout" initial={false}>
             {visibleProjects.map((project) => {
@@ -117,7 +130,10 @@ export function Portfolio() {
                       : { opacity: 0, scale: 0.97 }
                   }
                   transition={{ duration: 0.4, ease: EASE }}
-                  className={spanClass}
+                  className={clsx(
+                    "w-[86%] shrink-0 snap-start sm:w-auto",
+                    spanClass,
+                  )}
                 >
                   <ProjectCard
                     project={project}

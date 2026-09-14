@@ -16,7 +16,7 @@ export function WhyVolvex() {
               <div className="lg:sticky lg:top-32">
                 <SectionLabel>Why Volvex</SectionLabel>
                 <h2 className="type-h2 mt-5 text-ink">
-                  Why teams choose Volvex Designs
+                  Why choose Volvex Designs
                 </h2>
                 <p className="type-lead mt-6 max-w-[42ch] text-muted">
                   We don&apos;t just build what you&apos;re asked for. We help

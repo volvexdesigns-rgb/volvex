@@ -1,16 +1,14 @@
-import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
+import { ArrowUpRight, Mail, MapPin } from "lucide-react";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { Logo } from "@/components/ui/Logo";
-import { SOCIAL_ICONS, WhatsAppIcon } from "@/components/ui/SocialIcons";
+import { SOCIAL_ICONS } from "@/components/ui/SocialIcons";
 import {
   CONTACT,
   FOOTER_COMPANY,
   FOOTER_SERVICES,
   SITE_TAGLINE,
   SOCIALS,
-  telHref,
-  whatsappHref,
 } from "@/data/site";
 
 const LEGAL_LINKS = [
@@ -50,31 +48,6 @@ export function Footer() {
                   {CONTACT.email}
                 </a>
               </li>
-              {CONTACT.phones.map((phone) => (
-                <li key={phone} className="flex items-center gap-2.5">
-                  <a
-                    href={telHref(phone)}
-                    className="inline-flex items-center gap-2.5 text-muted transition-colors hover:text-brand-deep"
-                  >
-                    <Phone
-                      aria-hidden="true"
-                      strokeWidth={1.6}
-                      className="size-4 text-brand"
-                    />
-                    {phone}
-                  </a>
-                  <a
-                    href={whatsappHref(phone)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`Message ${phone} on WhatsApp`}
-                    title="Chat on WhatsApp"
-                    className="grid size-6 place-items-center rounded-md text-muted-2 transition-colors hover:bg-brand-mist hover:text-brand-deep"
-                  >
-                    <WhatsAppIcon className="size-3.5" />
-                  </a>
-                </li>
-              ))}
               {CONTACT.location ? (
                 <li className="inline-flex items-center gap-2.5 text-muted">
                   <MapPin

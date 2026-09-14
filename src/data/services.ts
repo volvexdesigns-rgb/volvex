@@ -63,4 +63,3 @@ export const SERVICES: Service[] = [
 ];
 
 /** Options for the "What do you need?" field on the project brief form. */
-export const SERVICE_OPTIONS = SERVICES.map((service) => service.title);

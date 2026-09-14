@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
@@ -6,6 +8,7 @@ import { Stagger, StaggerItem } from "@/components/ui/Stagger";
 import { TEAM } from "@/data/content";
 import { clsx } from "@/lib/clsx";
 import type { TeamMember } from "@/lib/types";
+import { useAutoScroll } from "@/lib/useAutoScroll";
 
 /**
  * Portrait placeholder shown until a real headshot is dropped into
@@ -30,6 +33,8 @@ function PortraitPlaceholder({ member }: { member: TeamMember }) {
 }
 
 export function Team() {
+  const railRef = useAutoScroll<HTMLDivElement>();
+
   return (
     <section
       id="team"
@@ -45,12 +50,21 @@ export function Team() {
           </p>
         </Reveal>
 
+        {/* Mobile: an auto-advancing swipe rail. sm+: the portrait grid. */}
         <Stagger
+          ref={railRef}
           stagger={0.07}
-          className="mt-12 grid gap-5 sm:mt-16 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6"
+          className={clsx(
+            "no-scrollbar -mx-5 mt-12 flex snap-x snap-mandatory scroll-pl-5 gap-5 overflow-x-auto px-5 pb-1",
+            "sm:mx-0 sm:mt-16 sm:grid sm:snap-none sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0",
+            "lg:grid-cols-4 lg:gap-6",
+          )}
         >
           {TEAM.map((member) => (
-            <StaggerItem key={member.id}>
+            <StaggerItem
+              key={member.id}
+              className="w-[70%] shrink-0 snap-start sm:w-auto"
+            >
               <article
                 className={clsx(
                   "group flex h-full flex-col overflow-hidden rounded-[20px] border transition-[border-color,transform] duration-400 hover:-translate-y-1",

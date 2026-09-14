@@ -15,12 +15,7 @@ export interface ProjectBrief {
   fullName: string;
   email: string;
   phone: string;
-  company: string;
-  services: string[];
-  budget: string;
-  timeline: string;
   message: string;
-  brief: File | null;
 }
 
 /** Serialises the brief so any multipart-capable endpoint can consume it. */
@@ -29,12 +24,7 @@ export function toFormData(brief: ProjectBrief, honeypot = ""): FormData {
   data.append("fullName", brief.fullName);
   data.append("email", brief.email);
   data.append("phone", brief.phone);
-  data.append("company", brief.company);
-  data.append("services", brief.services.join(", "));
-  data.append("budget", brief.budget);
-  data.append("timeline", brief.timeline);
   data.append("message", brief.message);
-  if (brief.brief) data.append("brief", brief.brief);
   // Spam trap — the server silently discards anything that fills this in.
   data.append("website", honeypot);
   return data;

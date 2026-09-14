@@ -2,15 +2,12 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
-  Check,
   CircleCheck,
   LoaderCircle,
   Mail,
   MapPin,
-  Paperclip,
   Phone,
   ShieldCheck,
-  X,
 } from "lucide-react";
 import { useId, useRef, useState } from "react";
 import { Container } from "@/components/ui/Container";
@@ -18,39 +15,11 @@ import { Reveal } from "@/components/ui/Reveal";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { WhatsAppIcon } from "@/components/ui/SocialIcons";
 import { CONTACT, telHref, whatsappHref } from "@/data/site";
-import { SERVICE_OPTIONS } from "@/data/services";
 import { clsx } from "@/lib/clsx";
 import { submitProjectBrief, type ProjectBrief } from "@/lib/contact";
 import { EASE } from "@/lib/motion";
 
-const BUDGET_OPTIONS = [
-  "₹20,000 – ₹50,000",
-  "₹50,000 – ₹1 lakh",
-  "₹1 lakh – ₹2 lakh",
-  "₹2 lakh+",
-  "Not sure yet",
-];
-
-const TIMELINE_OPTIONS = [
-  "As soon as possible",
-  "Within 1–3 months",
-  "Within 3–6 months",
-  "Still exploring",
-];
-
-const MAX_FILE_BYTES = 10 * 1024 * 1024;
-const ACCEPTED_FILE_TYPES =
-  ".pdf,.doc,.docx,.ppt,.pptx,.txt,.png,.jpg,.jpeg";
-
-type FieldName =
-  | "fullName"
-  | "email"
-  | "phone"
-  | "services"
-  | "budget"
-  | "timeline"
-  | "message"
-  | "brief";
+type FieldName = "fullName" | "email" | "phone" | "message";
 
 type Errors = Partial<Record<FieldName, string>>;
 type Status = "idle" | "submitting" | "success" | "error";
@@ -59,12 +28,7 @@ const EMPTY_BRIEF: ProjectBrief = {
   fullName: "",
   email: "",
   phone: "",
-  company: "",
-  services: [],
-  budget: "",
-  timeline: "",
   message: "",
-  brief: null,
 };
 
 function validate(brief: ProjectBrief): Errors {
@@ -82,19 +46,8 @@ function validate(brief: ProjectBrief): Errors {
     errors.phone = "Please enter a valid phone number.";
   }
 
-  if (brief.services.length === 0) {
-    errors.services = "Select at least one service.";
-  }
-
-  if (!brief.budget) errors.budget = "Please choose a budget range.";
-  if (!brief.timeline) errors.timeline = "Please choose a timeline.";
-
-  if (brief.message.trim().length < 20) {
-    errors.message = "Tell us a little more — at least 20 characters.";
-  }
-
-  if (brief.brief && brief.brief.size > MAX_FILE_BYTES) {
-    errors.brief = "That file is over 10 MB. Please attach a smaller file.";
+  if (brief.message.trim().length < 10) {
+    errors.message = "Tell us a little about the project.";
   }
 
   return errors;
@@ -153,7 +106,6 @@ export function Contact() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [honeypot, setHoneypot] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const reduceMotion = useReducedMotion();
 
   const fieldId = (name: string) => `${formId}-${name}`;
@@ -169,13 +121,6 @@ export function Contact() {
       delete next[key as FieldName];
       return next;
     });
-  };
-
-  const toggleService = (service: string) => {
-    const next = brief.services.includes(service)
-      ? brief.services.filter((item) => item !== service)
-      : [...brief.services, service];
-    update("services", next);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -201,7 +146,6 @@ export function Contact() {
       await submitProjectBrief(brief, honeypot);
       setStatus("success");
       setBrief(EMPTY_BRIEF);
-      if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (error) {
       setSubmitError(
         error instanceof Error && error.message ? error.message : null,
@@ -454,141 +398,6 @@ export function Contact() {
                             )}
                           />
                         </FieldShell>
-
-                        <FieldShell
-                          label="Company name"
-                          htmlFor={fieldId("company")}
-                          optional
-                        >
-                          <input
-                            id={fieldId("company")}
-                            name="company"
-                            type="text"
-                            autoComplete="organization"
-                            placeholder="Company Ltd."
-                            value={brief.company}
-                            onChange={(event) =>
-                              update("company", event.target.value)
-                            }
-                            className={clsx(FIELD_CLASSES, "border-line")}
-                          />
-                        </FieldShell>
-                      </div>
-
-                      {/* Services */}
-                      <fieldset>
-                        <legend className="mb-3 text-[0.8125rem] font-medium text-ink">
-                          What do you need?
-                        </legend>
-                        <div className="flex flex-wrap gap-2">
-                          {SERVICE_OPTIONS.map((service, index) => {
-                            const selected = brief.services.includes(service);
-                            return (
-                              <button
-                                key={service}
-                                type="button"
-                                data-field={index === 0 ? "services" : undefined}
-                                aria-pressed={selected}
-                                onClick={() => toggleService(service)}
-                                className={clsx(
-                                  "inline-flex items-center gap-1.5 rounded-xl border px-3.5 py-2 text-[0.8125rem] font-medium transition-[background-color,border-color,color] duration-200",
-                                  selected
-                                    ? "border-brand bg-brand text-white"
-                                    : "border-line bg-white text-muted hover:border-brand/40 hover:text-ink",
-                                )}
-                              >
-                                {selected ? (
-                                  <Check
-                                    aria-hidden="true"
-                                    className="size-3.5"
-                                    strokeWidth={2.4}
-                                  />
-                                ) : null}
-                                {service}
-                              </button>
-                            );
-                          })}
-                        </div>
-                        {errors.services ? (
-                          <p
-                            role="alert"
-                            className="mt-2 text-[0.8125rem] text-red-600"
-                          >
-                            {errors.services}
-                          </p>
-                        ) : null}
-                      </fieldset>
-
-                      <div className="grid gap-5 sm:grid-cols-2">
-                        <FieldShell
-                          label="Project budget"
-                          htmlFor={fieldId("budget")}
-                          error={errors.budget}
-                        >
-                          <select
-                            id={fieldId("budget")}
-                            data-field="budget"
-                            name="budget"
-                            value={brief.budget}
-                            onChange={(event) =>
-                              update("budget", event.target.value)
-                            }
-                            aria-invalid={Boolean(errors.budget)}
-                            className={clsx(
-                              FIELD_CLASSES,
-                              "appearance-none bg-[length:1rem] bg-[right_1rem_center] bg-no-repeat pr-10",
-                              brief.budget ? "text-ink" : "text-muted-2",
-                              errors.budget ? "border-red-400" : "border-line",
-                            )}
-                            style={{
-                              backgroundImage:
-                                "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235c6a6d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
-                            }}
-                          >
-                            <option value="">Select a range</option>
-                            {BUDGET_OPTIONS.map((option) => (
-                              <option key={option} value={option}>
-                                {option}
-                              </option>
-                            ))}
-                          </select>
-                        </FieldShell>
-
-                        <FieldShell
-                          label="Ideal timeline"
-                          htmlFor={fieldId("timeline")}
-                          error={errors.timeline}
-                        >
-                          <select
-                            id={fieldId("timeline")}
-                            data-field="timeline"
-                            name="timeline"
-                            value={brief.timeline}
-                            onChange={(event) =>
-                              update("timeline", event.target.value)
-                            }
-                            aria-invalid={Boolean(errors.timeline)}
-                            className={clsx(
-                              FIELD_CLASSES,
-                              "appearance-none bg-[length:1rem] bg-[right_1rem_center] bg-no-repeat pr-10",
-                              brief.timeline ? "text-ink" : "text-muted-2",
-                              errors.timeline
-                                ? "border-red-400"
-                                : "border-line",
-                            )}
-                            style={{
-                              backgroundImage:
-                                "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235c6a6d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
-                            }}
-                          >
-                            <option value="">Select a timeline</option>
-                            {TIMELINE_OPTIONS.map((option) => (
-                              <option key={option} value={option}>
-                                {option}
-                              </option>
-                            ))}
-                          </select>
-                        </FieldShell>
                       </div>
 
                       <FieldShell
@@ -618,65 +427,6 @@ export function Contact() {
                             errors.message ? "border-red-400" : "border-line",
                           )}
                         />
-                      </FieldShell>
-
-                      {/* File upload */}
-                      <FieldShell
-                        label="Upload a brief"
-                        htmlFor={fieldId("brief")}
-                        error={errors.brief}
-                        optional
-                      >
-                        <input
-                          ref={fileInputRef}
-                          id={fieldId("brief")}
-                          data-field="brief"
-                          name="brief"
-                          type="file"
-                          accept={ACCEPTED_FILE_TYPES}
-                          onChange={(event) =>
-                            update("brief", event.target.files?.[0] ?? null)
-                          }
-                          className="sr-only"
-                        />
-                        <div className="flex flex-wrap items-center gap-3">
-                          <label
-                            htmlFor={fieldId("brief")}
-                            className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-line bg-white px-4 py-2.5 text-[0.8125rem] font-medium text-ink transition-colors duration-200 hover:border-brand/40 hover:bg-brand-mist"
-                          >
-                            <Paperclip
-                              aria-hidden="true"
-                              strokeWidth={1.6}
-                              className="size-4 text-brand-deep"
-                            />
-                            Choose file
-                          </label>
-
-                          {brief.brief ? (
-                            <span className="inline-flex max-w-full items-center gap-2 rounded-lg border border-line bg-white px-3 py-1.5 text-[0.8125rem] text-muted">
-                              <span className="truncate">
-                                {brief.brief.name}
-                              </span>
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  update("brief", null);
-                                  if (fileInputRef.current) {
-                                    fileInputRef.current.value = "";
-                                  }
-                                }}
-                                aria-label={`Remove ${brief.brief.name}`}
-                                className="rounded text-muted-2 transition-colors hover:text-ink"
-                              >
-                                <X aria-hidden="true" className="size-3.5" />
-                              </button>
-                            </span>
-                          ) : (
-                            <span className="text-[0.75rem] text-muted-2">
-                              PDF, DOC, PPT or image — up to 10 MB
-                            </span>
-                          )}
-                        </div>
                       </FieldShell>
 
                       <div className="border-t border-line pt-6">

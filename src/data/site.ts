@@ -18,7 +18,6 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "Services", href: "/#services", id: "services" },
   { label: "Work", href: "/#work", id: "work" },
   { label: "Process", href: "/#process", id: "process" },
-  { label: "About", href: "/#about", id: "about" },
   { label: "Contact", href: "/#contact", id: "contact" },
 ];
 
@@ -68,7 +67,6 @@ export const FOOTER_SERVICES = [
 ];
 
 export const FOOTER_COMPANY: NavItem[] = [
-  { label: "About", href: "/#about", id: "about" },
   { label: "Work", href: "/#work", id: "work" },
   { label: "Process", href: "/#process", id: "process" },
   { label: "Contact", href: "/#contact", id: "contact" },

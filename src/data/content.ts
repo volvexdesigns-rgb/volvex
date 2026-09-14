@@ -13,7 +13,6 @@ import {
   PenLine,
   Rocket,
   Search,
-  ShieldCheck,
   TrendingUp,
   Wrench,
 } from "lucide-react";
@@ -58,11 +57,6 @@ export const DIFFERENTIATORS: Differentiator[] = [
     icon: Handshake,
   },
   {
-    title: "Fixed scope & timeline",
-    description: "Clear deliverables, milestones and expectations.",
-    icon: Compass,
-  },
-  {
     title: "You own everything",
     description:
       "Your code, accounts, hosting, analytics and design files remain yours.",
@@ -77,11 +71,6 @@ export const DIFFERENTIATORS: Differentiator[] = [
     title: "Support after launch",
     description: "We continue to monitor, maintain and improve your product.",
     icon: Wrench,
-  },
-  {
-    title: "Data over opinion",
-    description: "Decisions are backed by real user and business data.",
-    icon: ShieldCheck,
   },
 ];
 
@@ -111,13 +100,6 @@ export const PROCESS_STEPS: ProcessStep[] = [
       "We launch, monitor performance and continuously improve.",
     icon: Rocket,
   },
-];
-
-export const ABOUT_PIPELINE = [
-  { label: "Design", detail: "Research, wireframes, interface design" },
-  { label: "Development", detail: "Web, mobile and custom product builds" },
-  { label: "Systems", detail: "ERP, CRM and HRMS implementation" },
-  { label: "Growth", detail: "Marketing, analytics and iteration" },
 ];
 
 /**
