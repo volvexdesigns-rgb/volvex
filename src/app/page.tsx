@@ -8,7 +8,8 @@ import { Portfolio } from "@/components/Portfolio";
 import { Process } from "@/components/Process";
 import { Services } from "@/components/Services";
 import { Stats } from "@/components/Stats";
-import { Team } from "@/components/Team";
+// Team section is hidden for now — re-add <Team /> below to bring it back.
+// import { Team } from "@/components/Team";
 import { ValueProps } from "@/components/ValueProps";
 import { WhyVolvex } from "@/components/WhyVolvex";
 
@@ -32,7 +33,7 @@ export default function Home() {
         <WhyVolvex />
         <Process />
         <Stats />
-        <Team />
+        {/* <Team /> */}
         <FAQ />
         <FinalCTA />
         <Contact />
