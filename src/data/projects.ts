@@ -6,20 +6,7 @@ import type { Project, ProjectCategory } from "@/lib/types";
  * browser-frame placeholder for that card.
  */
 export const PROJECTS: Project[] = [
-  {
-    id: "anfocus",
-    title: "Anfocus",
-    type: "Web Application",
-    category: "web-apps",
-    url: "https://www.anfocus.in",
-    domain: "www.anfocus.in",
-    description:
-      "A custom web application built to support business operations and digital workflows.",
-    tags: ["Web App", "Full Stack", "Business Platform"],
-    ctaLabel: "Visit Project",
-    span: "wide",
-    image: "/images/projects/anfocus.png",
-  },
+
   {
     id: "zingos",
     title: "Zingos",
@@ -89,6 +76,20 @@ export const PROJECTS: Project[] = [
     ctaLabel: "Visit Project",
     span: "full",
     image: "/images/projects/anfocus-events.png",
+  },
+  {
+    id: "anfocus",
+    title: "Anfocus",
+    type: "Web Application",
+    category: "web-apps",
+    url: "https://www.anfocus.in",
+    domain: "www.anfocus.in",
+    description:
+      "A custom web application built to support business operations and digital workflows.",
+    tags: ["Web App", "Full Stack", "Business Platform"],
+    ctaLabel: "Visit Project",
+    span: "wide",
+    image: "/images/projects/anfocus.png",
   },
 ];
 
