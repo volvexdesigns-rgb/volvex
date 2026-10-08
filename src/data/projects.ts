@@ -21,6 +21,20 @@ export const PROJECTS: Project[] = [
     image: "/images/projects/anfocus.png",
   },
   {
+    id: "zingos",
+    title: "Zingos",
+    type: "Web Application",
+    category: "web-apps",
+    url: "https://www.zingos.in",
+    domain: "www.zingos.in",
+    description:
+      "A web application for a fried chicken shop, designed to showcase the menu and provide customers with a convenient online ordering experience.",
+    tags: ["Web App", "Food & Restaurant", "Online Ordering"],
+    ctaLabel: "Visit Project",
+    span: "wide",
+    image: "/images/projects/zingos.jpg",
+  },
+  {
     id: "centurion-international-school",
     title: "Centurion International School",
     type: "Website",
